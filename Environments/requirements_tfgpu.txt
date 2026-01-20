@@ -1,0 +1,41 @@
+# requirements_tfgpu.txt
+# Core for TensorFlow-based projects (training, inference, analysis, ONNX export)
+# Install: 
+#   1. conda create -n tfgpu python=3.10; conda activate tfgpu; 
+#   2. conda install cudatoolkit=11.8 cudnn=8.9 -c conda-forge; 
+#   3. pip install -r requirements_tfgpu.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# GPU note: TF bundles specific CUDA (e.g., 2.10 = CUDA 11.2; newer = CUDA 12.x). No flexible 11/12 switch like PyTorch.
+# On Windows native GPU: Stick to <=2.10; for CUDA 12.x use Linux or WSL2.
+
+# 0.
+tensorflow-gpu==2.10.1 # tensorflow-gpu>=2.6.0,<2.11.0
+tensorflow-addons>=0.20.0,<0.23.0
+keras>=2.6.0,<2.11.0
+protobuf>=3.9.2,<3.20 # protobuf MUST be <3.20 for TF <2.11.0
+tqdm>=4.60.0,<5.0.0
+h5py>=3.0.0,<3.9.0
+
+# 1. ONNX export
+onnx>=1.12.0,<1.15.0
+tf2onnx>=1.13.0,<1.16.0
+
+# 2. Visualization
+matplotlib>=3.3.0,<3.8.0
+
+# 3. Scientific base
+numpy>=1.19.2,<1.24.0
+scipy>=1.7.0,<1.11.0
+
+# 4. FLOPs / MACs analysis
+#onnx-tool>=0.7.0,<1.0.0
+
+
+
+# requirements_tfgpu_vision.txt
+# Vision-specific extras (image processing, metrics, etc.)
+# pip install -r requirements_tfgpu_vision.txt  (after requirements_tfgpu.txt)
+
+# 1. Image Processing
+opencv-python>=4.5.0,<5.0.0
+Pillow>=8.4.0,<11.0.0
+scikit-image>=0.19.0,<0.22.0

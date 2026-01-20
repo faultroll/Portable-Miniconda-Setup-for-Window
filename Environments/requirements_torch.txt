@@ -1,0 +1,47 @@
+# requirements_torch.txt
+# Core for PyTorch-based projects (training, inference, analysis, ONNX export)
+# Install: 
+#   1. conda create -n torch python=3.10; conda activate torch; 
+#   2. conda install cudatoolkit=11.8 cudnn=8.9 -c conda-forge; 
+#   3. pip install -r requirements_torch.txt -i https://download.pytorch.org/whl/cu118 --extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple
+#   or pip install -r requirements_torch.txt --find-links D:\Users\Downloads\pkgs --extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple
+# GPU note: CUDA version at https://download.pytorch.org/whl/cu118 (or cu128/cu126/cu121 based on your nvidia-smi CUDA Version), not available at mirror sites such as https://pypi.tuna.tsinghua.edu.cn/simple
+# Recommended sweet spot: PyTorch 2.5.0 ~ 2.7.1 for max CUDA 11.8~12.8 compatibility + ONNX stability
+
+# 0.
+torch>=2.5.0,<2.8.0
+torchvision>=0.20.0,<0.23.0
+tqdm>=4.60.0,<5.0.0             # Progress & basics
+warmup-scheduler>=0.3.0,<1.0.0  # Learning Rate Scheduler (universal for DL training, including warmup strategies)
+einops>=0.6.0,<1.0.0            # Tensor helpers
+ninja>=1.10.0,<2.0.0            # CUDA extension build support
+
+# 1. ONNX export
+onnx>=1.14.0,<1.17.0
+
+# 2. Visualization
+matplotlib>=3.5.0,<3.10.0       # Plot results, training curves
+tensorboard>=2.10.0,<3.0.0
+
+# 3. Scientific base
+numpy>=1.21.0,<2.0.0
+scipy>=1.7.0,<1.12.0            # Filters
+
+# 4. FLOPs / MACs analysis
+thop>=0.1.1,<1.0.0
+#onnx-tool>=0.7.0,<1.0.0         # ONNX model inspection
+
+
+
+# requirements_torch_vision.txt
+# Vision-specific extras (image processing, metrics, etc.)
+# pip install -r requirements_torch_vision.txt  (after requirements_torch.txt)
+
+# 1. Image Processing
+opencv-python>=4.5.0,<5.0.0
+Pillow>=9.5.0,<11.0.0
+scikit-image>=0.19.0,<0.21.0  # SSIM, PSNR, common filters
+
+# 2. Perceptual & quality metrics
+pytorch-msssim>=0.2.1,<1.0.0
+lpips>=0.1.4,<1.0.0
