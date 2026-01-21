@@ -40,6 +40,7 @@ def core_packages_tests():
         import onnxsim
         import tqdm
         import numpy, scipy
+        return ort.__version__
     result = TestResult("ONNX Core Packages")
     result.add_subtest("import packages", loadpkgs)
     return result
@@ -51,8 +52,12 @@ def cuda_tests():
             raise RuntimeError(f"CUDAExecutionProvider not available, got {providers}")
         return f"Available providers: {providers}"
     def dll_path():
+        # We need to start an InferenceSession, ort.preload_dlls(cuda=True, cudnn=True) is not available in current version
         # import onnxruntime as ort
-        # ort.preload_dlls(cuda=True, cudnn=True)
+        # print(ort.__version__)
+        # print(ort.get_device())
+        # session = ort.InferenceSession("xxx.onnx", providers=['CUDAExecutionProvider'])
+        # print(session.get_providers())
         import dllist
         loaded = dllist.dllist()
         keys = ["cudart", "cublas", "cudnn"]
