@@ -11,10 +11,10 @@
 # 0.
 torch>=2.5.0,<2.8.0
 torchvision>=0.20.0,<0.23.0
-tqdm>=4.60.0,<5.0.0             # Progress & basics
 warmup-scheduler>=0.3.0,<1.0.0  # Learning Rate Scheduler (universal for DL training, including warmup strategies)
 einops>=0.6.0,<1.0.0            # Tensor helpers
 ninja>=1.10.0,<2.0.0            # CUDA extension build support
+tqdm>=4.60.0,<5.0.0             # Progress & basics
 #dllist>=2.0.0                   # list loaded DLLs at runtime
 
 # 1. ONNX export

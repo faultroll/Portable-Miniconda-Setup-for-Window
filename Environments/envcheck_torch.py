@@ -75,7 +75,7 @@ def test_model_metrics():
 tests = [
     ("PyTorch Core Packages", test_core_packages),
     ("CUDA Availability", test_cuda),
-    ("ONNX Availability", test_onnx_export),
+    ("ONNX Export", test_onnx_export),
     ("Model Metrics", test_model_metrics),
 ]
 
