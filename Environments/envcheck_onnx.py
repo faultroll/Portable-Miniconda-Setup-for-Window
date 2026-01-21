@@ -68,14 +68,37 @@ def model_metrics_tests():
         import onnx_tool as ot
         # Build a minimal ONNX model and analyze flops
         from onnx import helper, TensorProto
-        node = helper.make_node("MatMul", ["X", "W"], ["Y"])
+        import numpy as np
+        # --- Layer 1 ---
+        node1 = helper.make_node("MatMul", ["X", "W1"], ["H"])
+        W1_init = np.random.rand(3, 4).astype(np.float32)  # 3x4
+        W1 = helper.make_tensor("W1", TensorProto.FLOAT, W1_init.shape, W1_init.flatten())
+        # --- Layer 2 ---
+        node2 = helper.make_node("MatMul", ["H", "W2"], ["Y"])
+        W2_init = np.random.rand(4, 2).astype(np.float32)  # 4x2
+        W2 = helper.make_tensor("W2", TensorProto.FLOAT, W2_init.shape, W2_init.flatten())
+        # --- Inputs / Outputs ---
         X = helper.make_tensor_value_info("X", TensorProto.FLOAT, [1, 3])
-        W = helper.make_tensor_value_info("W", TensorProto.FLOAT, [3, 2])
         Y = helper.make_tensor_value_info("Y", TensorProto.FLOAT, [1, 2])
-        graph = helper.make_graph([node], "dummy", [X, W], [Y])
+        # --- Build graph ---
+        graph = helper.make_graph(
+            nodes=[node1, node2],
+            name="dummy",
+            inputs=[X],
+            outputs=[Y],
+            initializer=[W1, W2]
+        )
         model = helper.make_model(graph)
-        # Use onnx-tool to get info
-        profile_info = ot.model_profile(model)
+        # --- Profile with onnx-tool ---
+        # ot.model_profile(model)
+        m = ot.Model(model)
+        m.graph.shape_infer({'X': np.zeros((1, 3))})
+        m.graph.profile()
+        m.graph.print_node_map()
+        macs = m.graph.macs[0]
+        params = m.graph.params
+        flops = macs * 2
+        return f"FLOPs={flops}, Params={params}"
     result = TestResult("Model Metrics")
     result.add_subtest("Dummy model Profile", dummy_flops)
     return result
